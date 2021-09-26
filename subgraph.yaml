@@ -1,0 +1,41 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: CvxLocker
+    network: mainnet
+    source:
+      address: "0xD18140b4B819b895A3dba5442F959fA44994AF50"
+      abi: CvxLocker
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - KickReward
+        - OwnershipTransferred
+        - Recovered
+        - RewardAdded
+        - RewardPaid
+        - Staked
+        - Withdrawn
+      abis:
+        - name: CvxLocker
+          file: ./abis/CvxLocker.json
+      eventHandlers:
+        - event: KickReward(indexed address,indexed address,uint256)
+          handler: handleKickReward
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Recovered(address,uint256)
+          handler: handleRecovered
+        - event: RewardAdded(indexed address,uint256)
+          handler: handleRewardAdded
+        - event: RewardPaid(indexed address,indexed address,uint256)
+          handler: handleRewardPaid
+        - event: Staked(indexed address,uint256,uint256,uint256)
+          handler: handleStaked
+        - event: Withdrawn(indexed address,uint256,bool)
+          handler: handleWithdrawn
+      file: ./src/mapping.ts
